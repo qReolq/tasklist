@@ -17,6 +17,7 @@
 		<java.version>17</java.version>
         <jjwt.version>0.11.5</jjwt.version>
 		<mybatis.version>3.0.2</mybatis.version>
+		<liquibase.version>4.23.2</liquibase.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -99,13 +100,17 @@
             <scope>runtime</scope>
         </dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>${mybatis.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>${liquibase.version}</version>
+		</dependency>
 
 	</dependencies>
 

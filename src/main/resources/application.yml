@@ -4,11 +4,10 @@ spring:
     username: postgres
     password: repa123
     driver-class-name: org.postgresql.Driver
-  sql:
-    init:
-      mode: always
-      continue-on-error: false
-#      data-locations: classpath:demo_data.sql
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yml
+    enabled: true
+    default-schema: tasklist
 
 security:
   jwt:
