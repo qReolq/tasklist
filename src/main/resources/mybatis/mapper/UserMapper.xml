@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--Relate UserRepository-->
+<mapper namespace="qreol.project.tasklist.repository.UserRepository">
+
+    <resultMap id="UserResultMap" type="qreol.project.tasklist.domain.user.User" autoMapping="false">
+        <id property="id" column="user_id"/>
+        <result property="name" column="user_name"/>
+        <result property="username" column="user_username"/>
+        <result property="password" column="user_password"/>
+        <result property="createdAt" column="user_created_at"/>
+
+        <collection property="roles"
+                    ofType="qreol.project.tasklist.domain.user.Role"
+                    autoMapping="false">
+            <result property="name" column="user_role_role"/>
+        </collection>
+
+        <collection property="tasks"
+                    ofType="qreol.project.tasklist.domain.task.Task"
+                    resultMap="qreol.project.tasklist.repository.TaskRepository.TaskResultMap"
+                    autoMapping="false"/>
+    </resultMap>
+
+    <select id="findById" resultMap="UserResultMap">
+        SELECT
+        u.id as user_id,
+        u.name as user_name,
+        u.username as user_username,
+        u.password as user_password,
+        u.created_at as user_created_at,
+        ur.role user_role_role,
+        t.id as task_id,
+        t.title as task_title,
+        t.description as task_description,
+        t.status as task_status,
+        t.expiration_date as task_expiration_date,
+        t.created_at as task_created_at
+        FROM users u
+        LEFT JOIN tasks t on u.id = t.user_id
+        LEFT JOIN users_roles ur on u.id = ur.user_id
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="findByUsername" resultMap="UserResultMap">
+        SELECT
+        u.id as user_id,
+        u.name as user_name,
+        u.username as user_username,
+        u.password as user_password,
+        u.created_at as user_created_at,
+        ur.role user_role_role,
+        t.id as task_id,
+        t.title as task_title,
+        t.description as task_description,
+        t.status as task_status,
+        t.expiration_date as task_expiration_date,
+        t.created_at as task_created_at
+        FROM users u
+        LEFT JOIN tasks t on u.id = t.user_id
+        LEFT JOIN users_roles ur on u.id = ur.user_id
+        WHERE u.username = #{username}
+    </select>
+
+    <update id="update">
+        UPDATE users
+        SET name = #{name},
+        username = #{username},
+        password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insertUserRole">
+        INSERT INTO users_roles(user_id, role)
+        values (#{userId}, #{role})
+    </insert>
+
+    <select id="isTaskOwner" resultType="boolean">
+        SELECT exists(
+        SELECT 1
+        FROM tasks
+        WHERE user_id = #{userId}
+        AND tasks.id = #{taskId}
+        )
+    </select>
+
+    <delete id="delete">
+        DELETE FROM users where id = #{id}
+    </delete>
+
+</mapper>

@@ -22,8 +22,6 @@ public class Task {
 
     private Status status;
 
-    private User owner;
-
     private LocalDateTime expirationDate;
 
     private LocalDateTime createdAt;

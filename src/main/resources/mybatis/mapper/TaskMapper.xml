@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--set repository-->
+<mapper namespace="qreol.project.tasklist.repository.TaskRepository">
+
+    <!--set name for mapper, set object for mapping-->
+    <resultMap id="TaskResultMap" type="qreol.project.tasklist.domain.task.Task" autoMapping="false">
+        <!--Set id-->
+        <id property="id" column="task_id"/>
+        <!--set object field name, set column name-->
+        <result property="title" column="task_title"/>
+        <result property="description" column="task_description"/>
+        <result property="status" column="task_status"/>
+        <result property="expirationDate" column="task_expiration_date"/>
+        <result property="createdAt" column="task_created_at"/>
+    </resultMap>
+
+    <select id="findById" resultMap="TaskResultMap">
+        SELECT t.id as task_id,
+        t.title as task_title,
+        t.description as task_description,
+        t.status as task_status,
+        t.expiration_date as task_expiration_date,
+        t.created_at as task_created_at
+        FROM tasks t
+        WHERE t.id = #{id}
+    </select>
+
+    <select id="findAllByUserId" resultMap="TaskResultMap">
+        SELECT t.id as task_id,
+        t.title as task_title,
+        t.description as task_description,
+        t.status as task_status,
+        t.expiration_date as task_expiration_date,
+        t.created_at as task_created_at
+        FROM tasks t
+        WHERE t.user_id = #{userId}
+    </select>
+
+    <insert id="assignToUserById">
+        UPDATE tasks SET user_id = #{userId} WHERE id = #{taskId}
+    </insert>
+
+    <update id="update">
+        UPDATE tasks
+        SET title = #{title},
+        description = #{description},
+        status = #{status},
+        expiration_date = #{expirationDate} where id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM tasks where id = #{id}
+    </delete>
+
+</mapper>

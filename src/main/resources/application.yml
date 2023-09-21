@@ -15,3 +15,6 @@ security:
     secret: YXNkYXNkU0FEc2FkamRmZ3Nsa0pBRExLSkFTRGxuZmdua05TQUpETmpxd2Vqd2VvcXdqcXdsa2pkTEtTQVNEYVNEamRuc2Rn
     access: 3600000
     refresh: 2592000000
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
