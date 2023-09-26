@@ -1,5 +1,7 @@
 package qreol.project.tasklist.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,7 @@ import qreol.project.tasklist.web.validation.validators.UserValidator;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
+@Tag(name = "Authentication", description = "Authentication API")
 public class AuthController {
 
     private final AuthService authService;
@@ -31,11 +34,13 @@ public class AuthController {
     private final UserMapper userMapper;
 
     @PostMapping("/login")
+    @Operation(summary = "Login")
     public HttpEntity<JwtResponse> login(@Validated @RequestBody JwtRequest loginRequest) {
         return new HttpEntity<>(authService.login(loginRequest));
     }
 
     @PostMapping("/registration")
+    @Operation(summary = "Register")
     public HttpEntity<UserDTO> register(@Validated(OnCreate.class) @RequestBody UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validate(userDTO, bindingResult);
 
@@ -45,6 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
+    @Operation(summary = "Refresh JWT token")
     public HttpEntity<JwtResponse> refresh(@RequestBody String refreshToken) {
         return new HttpEntity<>(authService.refresh(refreshToken));
     }

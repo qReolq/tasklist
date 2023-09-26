@@ -12,9 +12,4 @@ public class TasklistApplication {
 		SpringApplication.run(TasklistApplication.class, args);
 	}
 
-	@Bean
-	public ModelMapper getModelMapper() {
-		return new ModelMapper();
-	}
-
 }

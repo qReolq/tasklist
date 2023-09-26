@@ -3,14 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--set repository-->
 <mapper namespace="qreol.project.tasklist.repository.TaskRepository">
 
-    <!--set name for mapper, set object for mapping-->
     <resultMap id="TaskResultMap" type="qreol.project.tasklist.domain.task.Task" autoMapping="false">
-        <!--Set id-->
         <id property="id" column="task_id"/>
-        <!--set object field name, set column name-->
         <result property="title" column="task_title"/>
         <result property="description" column="task_description"/>
         <result property="status" column="task_status"/>
