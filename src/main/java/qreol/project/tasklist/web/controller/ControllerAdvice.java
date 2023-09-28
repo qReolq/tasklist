@@ -43,7 +43,7 @@ public class ControllerAdvice {
     //Access denied
     @ExceptionHandler({AccessDeniedException.class, org.springframework.security.access.AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionBody handleAccessDenied(AccessDeniedException e) {
+    public ExceptionBody handleAccessDenied() {
         return new ExceptionBody("Access denied", LocalDateTime.now());
     }
 

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import qreol.project.tasklist.domain.task.Task;
@@ -24,6 +25,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get TaskDTO by id")
+    @PreAuthorize("@customSecurityExpression.canAccessTask(#id)")
     public HttpEntity<TaskDTO> getById(@PathVariable("id") Long id) {
         Task task = taskService.getById(id);
 
@@ -32,6 +34,7 @@ public class TaskController {
 
     @PutMapping()
     @Operation(summary = "Update task")
+    @PreAuthorize("@customSecurityExpression.canAccessTask(#taskDTO.id)")
     public HttpEntity<TaskDTO> update(@Validated(OnUpdate.class) @RequestBody TaskDTO taskDTO) {
 
         Task updatedTask = taskService.update(taskMapper.toEntity(taskDTO));
@@ -41,6 +44,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete task by id")
+    @PreAuthorize("@customSecurityExpression.canAccessTask(#id)")
     public void deleteById(@PathVariable("id") Long id) {
         taskService.delete(id);
     }

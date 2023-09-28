@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,7 @@ public class UserController {
 
     @PutMapping
     @Operation(summary = "Update user")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#userDTO.id)")
     public HttpEntity<UserDTO> update(@Validated(OnUpdate.class) @RequestBody UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validateUpdate(userDTO, bindingResult);
 
@@ -47,6 +49,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get UserDTO by id")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public HttpEntity<UserDTO> getById(@PathVariable Long id) {
         User user = userService.getById(id);
 
@@ -55,6 +58,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete user by id")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public void deleteById(@PathVariable Long id) {
         userService.delete(id);
     }
@@ -62,6 +66,7 @@ public class UserController {
 
     @GetMapping("/{id}/tasks")
     @Operation(summary = "Get all user tasks by id")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public HttpEntity<List<TaskDTO>> getTasksByUserId(@PathVariable("id") Long id) {
         List<TaskDTO> tasks = taskService.getAllByUserId(id)
                 .stream().map(taskMapper::toDTO).toList();
@@ -71,6 +76,7 @@ public class UserController {
 
     @PostMapping("/{id}/tasks")
     @Operation(summary = "Add task to user")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public HttpEntity<TaskDTO> createTask(@PathVariable("id") Long id,
                                           @Validated(OnCreate.class) @RequestBody TaskDTO taskDTO) {
 
