@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import qreol.project.tasklist.domain.user.User;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class Task implements Serializable {
 
     private Long id;
 

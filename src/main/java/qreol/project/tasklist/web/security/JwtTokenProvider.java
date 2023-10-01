@@ -17,6 +17,8 @@ import qreol.project.tasklist.service.props.JwtProperties;
 import qreol.project.tasklist.web.dto.auth.JwtResponse;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -39,14 +41,10 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.put("id", user.getId());
         claims.put("roles", resolveRoles(user.getRoles()));
-
-        Date now = new Date();
-        Date expiredTime = new Date(now.getTime() + jwtProperties.getAccess());
-
+        Instant validity = Instant.now().plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiredTime)
+                .setExpiration(Date.from(validity))
                 .signWith(key)
                 .compact();
     }
@@ -54,14 +52,11 @@ public class JwtTokenProvider {
     public String createRefreshToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.put("id", user.getId());
-
-        Date now = new Date();
-        Date expiredTime = new Date(now.getTime() + jwtProperties.getRefresh());
+        Instant validity = Instant.now().plus(jwtProperties.getRefresh(), ChronoUnit.HOURS);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiredTime)
+                .setExpiration(Date.from(validity))
                 .signWith(key)
                 .compact();
     }

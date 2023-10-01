@@ -1,6 +1,9 @@
 package qreol.project.tasklist.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import qreol.project.tasklist.domain.exception.ResourceNotFoundException;
@@ -18,10 +21,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class TaskServiceImpl implements TaskService {
 
-    private final UserService userService;
     private final TaskRepository taskRepository;
 
     @Override
+    @Cacheable(value = "TaskService::getById", key = "#id")
     public Task getById(Long id) {
         return taskRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Task not found"));
@@ -34,6 +37,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
+    @CachePut(value = "TaskService::getById", key = "#task.getId()")
     public Task update(Task task) {
         if (task.getStatus() == null) {
             task.setStatus(Status.TODO);
@@ -45,6 +49,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
+    @Cacheable(value = "TaskService::getById", key = "#task.getId()")
     public Task create(Task task, Long userId) {
         enrichTask(task);
 
@@ -57,6 +62,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "TaskService::getById", key = "#id")
     public void delete(Long id) {
         taskRepository.delete(id);
     }

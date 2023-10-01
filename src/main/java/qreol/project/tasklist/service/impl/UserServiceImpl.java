@@ -1,6 +1,10 @@
 package qreol.project.tasklist.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +26,14 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Cacheable(value = "UserService::getById", key = "#id")
     public User getById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
+    @Cacheable(value = "UserService::getByUsername", key = "#username")
     public User getByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -35,6 +41,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @Caching(put = {
+            @CachePut(value = "UserService::getById", key = "#user.getId()"),
+            @CachePut(value = "UserService::getByUsername", key = "#user.getUsername()")
+    })
     public User update(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.update(user);
@@ -43,6 +53,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @Caching(cacheable = {
+            @Cacheable(value = "UserService::getById", key = "#user.getId()"),
+            @Cacheable(value = "UserService::getByUsername", key = "#user.getUsername()")
+    })
     public User create(User user) {
         enrichUser(user);
 
@@ -55,11 +69,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "UserService::getById", key = "#id")
     public void delete(Long id) {
         userRepository.delete(id);
     }
 
     @Override
+    @Cacheable(value = "UserService::isTaskOwner", key = "#userId + '.' + #taskId")
     public boolean isTaskOwner(Long userId, Long taskId) {
         return userRepository.isTaskOwner(userId, taskId);
     }
