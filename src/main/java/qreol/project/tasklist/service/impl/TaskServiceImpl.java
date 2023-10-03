@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import qreol.project.tasklist.domain.exception.ResourceNotFoundException;
 import qreol.project.tasklist.domain.task.Status;
 import qreol.project.tasklist.domain.task.Task;
+import qreol.project.tasklist.domain.user.User;
 import qreol.project.tasklist.repository.TaskRepository;
 import qreol.project.tasklist.service.TaskService;
 import qreol.project.tasklist.service.UserService;
@@ -22,6 +23,7 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserService userService;
 
     @Override
     @Cacheable(value = "TaskService::getById", key = "#id")
@@ -42,21 +44,19 @@ public class TaskServiceImpl implements TaskService {
         if (task.getStatus() == null) {
             task.setStatus(Status.TODO);
         }
-        taskRepository.update(task);
-
-        return task;
+        return taskRepository.save(task);
     }
 
     @Override
     @Transactional
     @Cacheable(value = "TaskService::getById", key = "#task.getId()")
     public Task create(Task task, Long userId) {
+        User user = userService.getById(userId);
         enrichTask(task);
+        user.getTasks().add(task);
 
-        Long taskId = taskRepository.create(task);
-        taskRepository.assignToUserById(taskId, userId);
+        userService.update(user);
 
-        task.setId(taskId);
         return task;
     }
 
@@ -64,7 +64,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @CacheEvict(value = "TaskService::getById", key = "#id")
     public void delete(Long id) {
-        taskRepository.delete(id);
+        taskRepository.deleteById(id);
     }
 
     private void enrichTask(Task task) {

@@ -1,32 +1,24 @@
 package qreol.project.tasklist.repository;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import qreol.project.tasklist.domain.user.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import qreol.project.tasklist.domain.user.User;
 
 import java.util.Optional;
 
-@Mapper
-public interface UserRepository {
-
-    Optional<User> findById(Long id);
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String email);
 
-    void update(User user);
-
-    @Select(" INSERT INTO users (name, username, password, created_at)\n" +
-            " values (#{name},#{username},#{password},#{createdAt}) RETURNING id")
-    @Options(flushCache = Options.FlushCachePolicy.TRUE, useGeneratedKeys = true, keyProperty = "id", keyColumn="id")
-    Long create(User user);
-
-    void delete(Long id);
-
-    void insertUserRole(@Param("userId") Long userId, @Param("role") Role role);
-
-    boolean isTaskOwner(@Param("userId") Long userId, @Param("taskId") Long taskId);
+    @Query(value = """
+                SELECT exists(
+                SELECT 1
+                FROM tasks
+                WHERE user_id = :userId
+                AND tasks.id = :taskId
+                )       
+            """, nativeQuery = true)
+    boolean isTaskOwner(@Param("userId") Long userId, @Param("taskId")Long taskId);
 
 }
