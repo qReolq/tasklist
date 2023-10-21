@@ -53,7 +53,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     @Caching(cacheable = {
-            @Cacheable(value = "UserService::getById", key = "#user.getId()"),
             @Cacheable(value = "UserService::getByUsername", key = "#user.getUsername()")
     })
     public User create(User user) {

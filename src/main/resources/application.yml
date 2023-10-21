@@ -7,7 +7,7 @@ spring:
   data:
     redis:
       host: ${REDIS_HOST}
-      port: 6370
+      port: 6379
       password: ${REDIS_PASSWORD}
   datasource:
     url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
@@ -27,3 +27,9 @@ security:
 
 springdoc:
   override-with-generic-response: false
+
+minio:
+  bucket: ${MINIO_BUCKET}
+  url: ${MINIO_URL}
+  accessKey: ${MINIO_ACCESS_KEY}
+  secretKey: ${MINIO_SECRET_KEY}

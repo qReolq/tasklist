@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query(value = """
-            SELECT * FROM tasks t JOIN users u on u.id = t.user_id
-            """, nativeQuery = true)
+    @Query(value =
+            "SELECT id, user_id, title, description, status, expiration_date, created_at " +
+                    "FROM tasks t " +
+                    "WHERE t.user_id = :userId", nativeQuery = true)
     List<Task> findAllByUserId(@Param("userId") Long userId);
-
 }

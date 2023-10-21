@@ -9,6 +9,8 @@ import qreol.project.tasklist.domain.user.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tasks")
@@ -38,5 +40,10 @@ public class Task implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
+
+    @Column(name = "image")
+    @CollectionTable(name = "tasks_images")
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> images = new ArrayList<>();
 
 }

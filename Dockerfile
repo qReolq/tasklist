@@ -1,3 +1,10 @@
+FROM maven:3-openjdk-17-slim AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean package -DskipTests
+
 FROM openjdk:17-jdk-slim
-COPY target/tasklist-0.0.1-SNAPSHOT.jar application.jar
-ENTRYPOINT ["java", "-jar", "application.jar"]
+COPY --from=build /home/app/target/*.jar /usr/local/lib/demo.jar
+EXPOSE 8080
+ENV JAVA_TOOL_OPTIONS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+ENTRYPOINT ["java","-jar","/usr/local/lib/demo.jar"]

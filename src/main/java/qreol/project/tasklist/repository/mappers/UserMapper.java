@@ -1,4 +1,4 @@
-package qreol.project.tasklist.repository.mapper.mappers;
+package qreol.project.tasklist.repository.mappers;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

@@ -14,6 +14,8 @@ import qreol.project.tasklist.web.validation.flags.OnCreate;
 import qreol.project.tasklist.web.validation.flags.OnUpdate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Schema(description = "Task DTO")
@@ -45,5 +47,8 @@ public class TaskDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<String> images = new ArrayList<>();
 
 }
