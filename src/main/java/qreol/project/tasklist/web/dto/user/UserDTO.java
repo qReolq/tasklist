@@ -11,6 +11,7 @@ import qreol.project.tasklist.web.validation.flags.OnCreate;
 import qreol.project.tasklist.web.validation.flags.OnUpdate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Schema(description = "User DTO")

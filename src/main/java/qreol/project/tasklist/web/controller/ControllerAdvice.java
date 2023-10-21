@@ -7,10 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import qreol.project.tasklist.domain.exception.AccessDeniedException;
-import qreol.project.tasklist.domain.exception.ResourceMappingException;
-import qreol.project.tasklist.domain.exception.ResourceNotFoundException;
-import qreol.project.tasklist.domain.exception.ResourceNotValidException;
+import qreol.project.tasklist.domain.exception.*;
 import qreol.project.tasklist.web.dto.exception.ExceptionBody;
 
 import java.time.LocalDateTime;
@@ -83,6 +80,12 @@ public class ControllerAdvice {
         return errors
                 .stream()
                 .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+    }
+
+    @ExceptionHandler(ImageUploadException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleImageUpload(ImageUploadException e) {
+        return new ExceptionBody(e.getMessage(), LocalDateTime.now());
     }
 
 }

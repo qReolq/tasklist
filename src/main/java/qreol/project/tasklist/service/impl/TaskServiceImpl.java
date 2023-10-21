@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import qreol.project.tasklist.domain.exception.ResourceNotFoundException;
 import qreol.project.tasklist.domain.task.Status;
 import qreol.project.tasklist.domain.task.Task;
+import qreol.project.tasklist.domain.task.TaskImage;
 import qreol.project.tasklist.domain.user.User;
 import qreol.project.tasklist.repository.TaskRepository;
+import qreol.project.tasklist.service.ImageService;
 import qreol.project.tasklist.service.TaskService;
 import qreol.project.tasklist.service.UserService;
 
@@ -22,6 +24,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class TaskServiceImpl implements TaskService {
 
+    private final ImageService imageService;
     private final TaskRepository taskRepository;
     private final UserService userService;
 
@@ -72,4 +75,14 @@ public class TaskServiceImpl implements TaskService {
         task.setCreatedAt(LocalDateTime.now());
     }
 
+    @Override
+    @Transactional
+    @CacheEvict(value = "TaskService::getById", key = "#id")
+    public void uploadImage(Long id, TaskImage image) {
+        Task task = getById(id);
+        String fileName = imageService.upload(image);
+        task.getImages().add(fileName);
+
+        taskRepository.save(task);
+    }
 }
