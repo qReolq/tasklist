@@ -47,12 +47,15 @@ public class UserValidator implements Validator {
 
     private void validatePassword(UserDTO user, Errors errors) {
         if (user.getPasswordConfirmation() == null || user.getPassword() == null
-                || !user.getPassword().equals(user.getPasswordConfirmation()))
+                || !user.getPassword().equals(user.getPasswordConfirmation())) {
             errors.rejectValue("passwordConfirmation", "", "Password confirmation should be correct");
+        }
     }
 
     private void checkError(Errors errors) {
-        if (errors.hasErrors()) throw new ResourceNotValidException(errors.getFieldErrors());
+        if (errors.hasErrors()) {
+            throw new ResourceNotValidException(errors.getFieldErrors());
+        }
     }
 
 }

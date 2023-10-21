@@ -1,5 +1,5 @@
 package qreol.project.tasklist.domain.exception;
 
-public class AccessDeniedException extends RuntimeException{
+public class AccessDeniedException extends RuntimeException {
 
 }
