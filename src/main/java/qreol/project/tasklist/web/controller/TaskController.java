@@ -34,7 +34,6 @@ public class TaskController {
     @Transactional(readOnly = true)
     public HttpEntity<TaskDTO> getById(@PathVariable("id") Long id) {
         Task task = taskService.getById(id);
-        task.getImages();
         return new HttpEntity<>(taskMapper.toDTO(task));
     }
 
