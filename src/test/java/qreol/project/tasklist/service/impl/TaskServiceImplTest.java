@@ -21,6 +21,7 @@ import qreol.project.tasklist.service.ImageService;
 import qreol.project.tasklist.service.TaskService;
 import qreol.project.tasklist.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -104,12 +105,14 @@ public class TaskServiceImplTest {
 
     @Test
     void updateWithStatus() {
+        Long id = 1L;
         Task task = new Task();
-        task.setId(1L);
+        task.setId(id);
         task.setDescription("description");
         task.setStatus(Status.IN_PROGRESS);
 
         Mockito.when(taskRepository.save(task)).thenReturn(task);
+        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
 
         Task testTask = taskService.update(task);
         Mockito.verify(taskRepository).save(task);
@@ -118,11 +121,14 @@ public class TaskServiceImplTest {
 
     @Test
     void updateWithNullStatus() {
+        Long id = 1L;
         Task task = new Task();
-        task.setId(1L);
+        task.setId(id);
         task.setDescription("description");
+        task.setCreatedAt(LocalDateTime.now());
 
         Mockito.when(taskRepository.save(task)).thenReturn(task);
+        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
 
         Task testTask = taskService.update(task);
         Mockito.verify(taskRepository).save(task);
