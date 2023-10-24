@@ -229,7 +229,7 @@
                                         </limit>
                                     </limits>
                                     <includes>
-                                        <include>com.example.tasklist.service.impl</include>
+                                        <include>qreol.project.tasklist.service.impl</include>
                                     </includes>
                                 </rule>
                             </rules>
