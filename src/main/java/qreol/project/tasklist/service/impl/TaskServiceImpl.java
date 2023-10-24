@@ -47,6 +47,10 @@ public class TaskServiceImpl implements TaskService {
         if (task.getStatus() == null) {
             task.setStatus(Status.TODO);
         }
+
+        LocalDateTime createdAt = getById(task.getId()).getCreatedAt();
+        task.setCreatedAt(createdAt);
+
         return taskRepository.save(task);
     }
 

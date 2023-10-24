@@ -14,6 +14,7 @@ import qreol.project.tasklist.service.ImageService;
 import qreol.project.tasklist.service.props.MinioProperties;
 
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -33,7 +34,7 @@ public class TaskImageServiceImpl implements ImageService {
 
         MultipartFile file = image.getFile();
         if (file.isEmpty() || file.getOriginalFilename() == null) {
-            throw new ImageUploadException("Image must have name");
+            throw new ImageUploadException("Image must have name.");
         }
 
         String fileName = generateFileName(file);
@@ -80,7 +81,7 @@ public class TaskImageServiceImpl implements ImageService {
     }
 
     private String getExtension(MultipartFile file) {
-        return file.getOriginalFilename()
+        return Objects.requireNonNull(file.getOriginalFilename())
                 .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
     }
 
