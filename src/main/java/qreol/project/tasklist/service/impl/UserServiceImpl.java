@@ -47,6 +47,10 @@ public class UserServiceImpl implements UserService {
     })
     public User update(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        LocalDateTime createdAt = getById(user.getId()).getCreatedAt();
+        user.setCreatedAt(createdAt);
+
         return userRepository.save(user);
     }
 
