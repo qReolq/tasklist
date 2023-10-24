@@ -20,6 +20,7 @@ import qreol.project.tasklist.domain.user.User;
 import qreol.project.tasklist.repository.TaskRepository;
 import qreol.project.tasklist.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @SpringBootTest
@@ -100,15 +101,20 @@ public class UserServiceImplTest {
 
     @Test
     void update() {
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("username");
+        Long id = 1L;
         String password = "password";
+        String username = "username";
+        LocalDateTime createdAt = LocalDateTime.now();
+        User user = new User();
+        user.setId(id);
+        user.setUsername(username);
         user.setPassword(password);
+        user.setCreatedAt(createdAt);
 
         Mockito.when(userRepository.save(user)).thenReturn(user);
         Mockito.when(passwordEncoder.encode(password))
                 .thenReturn("encodePassword");
+        Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(user));
 
         userService.update(user);
         Mockito.verify(passwordEncoder).encode(password);
