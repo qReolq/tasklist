@@ -67,7 +67,7 @@ To run this application you need to create `.env` file in root directory with ne
 
 ```Bash
 git clone https://github.com/qReolq/tasklist.git
-cd hubr
+cd tasklist
 ```
 2. Start docker compose
 
