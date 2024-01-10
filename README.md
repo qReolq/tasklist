@@ -54,7 +54,7 @@ To run this application you need to create `.env` file in root directory with ne
 - `POSTGRES_DATABASE` - name of Postgresql database
 - `POSTGRES_SCHEMA` - name of Postgresql schema
 - `REDIS_HOST` - host of Redis instance
-- `REDIS_PORT` - host of Redis instance
+- `REDIS_PORT` - port of Redis instance
 - `REDIS_PASSWORD` - password for Redis
 - `JWT_SECRET` - secret string for JWT tokens
 - `MINIO_BUCKET` - name of bucket for MinIO
