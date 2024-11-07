@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:15:///testdb
+    username: test
+    password: test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yml
+    enabled: true
+  cache:
+    type: none
+  jpa:
+    hibernate:
+      ddl-auto: none
+server:
+  port: 8088

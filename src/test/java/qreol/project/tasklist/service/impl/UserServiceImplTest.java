@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @SpringBootTest
-@ActiveProfiles("junit")
+@ActiveProfiles("test")
 @Import(TestConfig.class)
 @ExtendWith(MockitoExtension.class)
 @EnableAutoConfiguration(exclude = {RedisAutoConfiguration.class,

@@ -44,4 +44,10 @@ public class User implements Serializable {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    public User(String name, String username, String password, LocalDateTime createdAt) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.createdAt = createdAt;
+    }
 }

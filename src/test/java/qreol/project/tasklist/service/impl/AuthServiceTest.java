@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Set;
 
 @SpringBootTest
-@ActiveProfiles("junit")
+@ActiveProfiles("test")
 @Import(TestConfig.class)
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {

@@ -4,12 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import qreol.project.tasklist.domain.user.User;
 import qreol.project.tasklist.repository.mappers.UserMapper;
 import qreol.project.tasklist.service.AuthService;
@@ -34,12 +32,14 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Login")
+    @ResponseStatus(HttpStatus.OK)
     public HttpEntity<JwtResponse> login(@Validated @RequestBody JwtRequest loginRequest) {
         return new HttpEntity<>(authService.login(loginRequest));
     }
 
     @PostMapping("/registration")
     @Operation(summary = "Register")
+    @ResponseStatus(HttpStatus.CREATED)
     public HttpEntity<UserDTO> register(@Validated(OnCreate.class) @RequestBody UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validate(userDTO, bindingResult);
 

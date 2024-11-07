@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -50,6 +51,7 @@ public class UserController {
     @GetMapping("/{id}")
     @Operation(summary = "Get UserDTO by id")
     @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
+    @ResponseStatus(HttpStatus.OK)
     public HttpEntity<UserDTO> getById(@PathVariable Long id) {
         User user = userService.getById(id);
 
