@@ -22,7 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 @SpringBootTest
-@ActiveProfiles("junit")
+@ActiveProfiles("test")
 @Import(TestConfig.class)
 @ExtendWith(MockitoExtension.class)
 public class TaskImageServiceImplTest {
