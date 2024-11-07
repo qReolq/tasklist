@@ -7,7 +7,7 @@ This REST API application allows you to organize the creation and tracking of yo
 * [Quick start](#quick-start)
 
 ## Technologies
-Spring(Boot, Security, JPA), JWT, Swagger, Docker, PostgreSQL, Redis, Mybatis, MinIO, Liquibase, JUnit, Mockito, JaCoCo
+Spring(Boot, Security, JPA), JWT, Swagger, Docker, PostgreSQL, Redis, Mybatis, MinIO, Liquibase, JUnit, Mockito, JaCoCo, Testcontainers
  
 ## Features
   * User can:
