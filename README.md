@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/github/qReolq/tasklist/graph/badge.svg?token=EJGNX53563)](https://codecov.io/github/qReolq/tasklist)
+
 # tasklist
 
 This REST API application allows you to organize the creation and tracking of your tasks.
