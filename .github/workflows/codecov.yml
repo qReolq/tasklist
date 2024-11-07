@@ -21,7 +21,7 @@ jobs:
           restore-keys: |
             maven-
       - run: |
-          mvn clean install
+          mvn clean package
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
