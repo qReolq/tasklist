@@ -72,4 +72,23 @@ public class UserControllerTest {
                 .body("username", Matchers.equalTo(user.getUsername()));
     }
 
+    @Test
+    void getUserByIdWithoutTokenTest() {
+        String rawPassword = "password";
+        User user = new User(
+                "name",
+                "username",
+                rawPassword,
+                LocalDateTime.now()
+        );
+        long id = userService.create(user).getId();
+
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/{id}", id)
+                .then()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+
 }
